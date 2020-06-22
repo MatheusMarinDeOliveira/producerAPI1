@@ -50,10 +50,4 @@ public class RabbitMQConfigurations {
         return new Jackson2JsonMessageConverter();
     }
 
-    @Bean
-    MessageListenerAdapter listenerAdapter(RabbitMQListener listener) {
-        return new MessageListenerAdapter(listener, "listen");
-    }
-
-
 }
