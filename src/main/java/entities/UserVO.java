@@ -2,25 +2,15 @@ package entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity(name = "usuario")
 public class UserVO {
 
     @JsonProperty("idUser")
-    @Id
-    @GeneratedValue
     public Integer idUser;
 
     @JsonProperty("name")
-    @Column
     public String name;
 
     @JsonProperty("password")
-    @Column
     public String password;
 
     public UserVO(Integer idUser, String name, String password) {
