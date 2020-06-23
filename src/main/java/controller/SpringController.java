@@ -17,8 +17,9 @@ public class SpringController {
     @Autowired
     public RabbitMQService rabbitMQService;
 
-    @PostMapping("/user")
-    public String saveUser(@RequestBody ListPlacesRequest payload) {
+    //Vai listar todos os lugares para viagem
+    @PostMapping("/listPlaces")
+    public String listPlaces(@RequestBody ListPlacesRequest payload) {
         try {
             FlightService.listPlaces(payload);
         } catch (Exception e) {
@@ -27,4 +28,30 @@ public class SpringController {
         rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
         return "user " + payload.getQueryParameter() + " created in database!!";
     }
+
+    //Lista viagens disponiveis dps de passar destino e partida
+    @PostMapping("/browseQuotes")
+    public String browseQuotes(@RequestBody ListPlacesRequest payload) {
+        try {
+            FlightService.listPlaces(payload);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
+        return "user " + payload.getQueryParameter() + " created in database!!";
+    }
+
+    //Vai realizar postagem pro consumer fazer o processamento do pagamento
+    @PostMapping("/checkoutFlight")
+    public String checkoutFlight(@RequestBody ListPlacesRequest payload) {
+        try {
+            FlightService.listPlaces(payload);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
+        return "user " + payload.getQueryParameter() + " created in database!!";
+    }
+
+
 }
