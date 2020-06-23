@@ -18,7 +18,7 @@ public class RabbitMQService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendMessageToRabbit(Integer idUser, String name, String password) {
+    public void sendMessageToRabbit(String idUser, String name, String password) {
         ObjectMapper objectMapper = new ObjectMapper();
         UserVO userVO = new UserVO(idUser, name, password);
         try {
