@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import entities.BrowseQuotesRequest;
-import entities.BrowseQuotesResponse;
-import entities.ListPlacesRequest;
-import entities.ListPlacesResponse;
+import entities.browsequotes.BrowseQuotesRequest;
+import entities.browsequotes.BrowseQuotesResponse;
+import entities.listplaces.ListPlacesRequest;
+import entities.listplaces.ListPlacesResponse;
 import org.springframework.stereotype.Service;
 
 @Service

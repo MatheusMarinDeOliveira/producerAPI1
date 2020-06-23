@@ -1,7 +1,9 @@
 package controller;
 
-import com.mashape.unirest.http.HttpResponse;
-import entities.*;
+import entities.browsequotes.BrowseQuotesRequest;
+import entities.browsequotes.BrowseQuotesResponse;
+import entities.listplaces.ListPlacesRequest;
+import entities.listplaces.ListPlacesResponse;
 import infrastructure.flightapi.FlightService;
 import infrastructure.rabbitmq.RabbitMQService;
 import org.springframework.beans.factory.annotation.Autowired;
