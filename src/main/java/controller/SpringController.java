@@ -1,7 +1,7 @@
 package controller;
 
-import entities.ListPlacesRequest;
-import entities.UserVO;
+import com.mashape.unirest.http.HttpResponse;
+import entities.*;
 import infrastructure.flightapi.FlightService;
 import infrastructure.rabbitmq.RabbitMQService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,35 +17,37 @@ public class SpringController {
     @Autowired
     public RabbitMQService rabbitMQService;
 
+    @Autowired
+    public FlightService flightService;
+
     //Vai listar todos os lugares para viagem
     @PostMapping("/listPlaces")
-    public String listPlaces(@RequestBody ListPlacesRequest payload) {
+    public ListPlacesResponse listPlaces(@RequestBody ListPlacesRequest payload) {
         try {
-            FlightService.listPlaces(payload);
+            ListPlacesResponse listPlacesResponse = flightService.listPlaces(payload);
+            return listPlacesResponse;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
-        return "user " + payload.getQueryParameter() + " created in database!!";
+        return new ListPlacesResponse();
     }
 
     //Lista viagens disponiveis dps de passar destino e partida
     @PostMapping("/browseQuotes")
-    public String browseQuotes(@RequestBody ListPlacesRequest payload) {
+    public BrowseQuotesResponse browseQuotes(@RequestBody BrowseQuotesRequest payload) {
         try {
-            FlightService.listPlaces(payload);
+            return flightService.browseQuotes(payload);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
-        return "user " + payload.getQueryParameter() + " created in database!!";
+        return new BrowseQuotesResponse();
     }
 
     //Vai realizar postagem pro consumer fazer o processamento do pagamento
     @PostMapping("/checkoutFlight")
     public String checkoutFlight(@RequestBody ListPlacesRequest payload) {
         try {
-            FlightService.listPlaces(payload);
+          //  FlightService.listPlaces(payload);
         } catch (Exception e) {
             e.printStackTrace();
         }

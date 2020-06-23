@@ -7,5 +7,5 @@ import java.util.List;
 public class ListPlacesResponse {
 
     @JsonProperty("Places")
-    List<Places> placesList;
+    List<PlacesApiListPlace> placesList;
 }
