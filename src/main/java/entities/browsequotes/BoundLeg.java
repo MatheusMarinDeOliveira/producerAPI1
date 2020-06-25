@@ -7,14 +7,46 @@ import java.util.List;
 public class BoundLeg {
 
     @JsonProperty("CarrierIds")
-    public List<String> carriesIds;
+    private List<String> carriesIds;
 
     @JsonProperty("OriginId")
-    public String originId;
+    private String originId;
 
     @JsonProperty("DestinationId")
-    public String destinationId;
+    private String destinationId;
 
     @JsonProperty("DepartureDate")
-    public String departureDate;
+    private String departureDate;
+
+    public List<String> getCarriesIds() {
+        return carriesIds;
+    }
+
+    public void setCarriesIds(List<String> carriesIds) {
+        this.carriesIds = carriesIds;
+    }
+
+    public String getOriginId() {
+        return originId;
+    }
+
+    public void setOriginId(String originId) {
+        this.originId = originId;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
+    }
+
+    public void setDestinationId(String destinationId) {
+        this.destinationId = destinationId;
+    }
+
+    public String getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(String departureDate) {
+        this.departureDate = departureDate;
+    }
 }

@@ -7,15 +7,46 @@ import java.util.List;
 public class BrowseQuotesResponse {
 
     @JsonProperty("Quotes")
-    public List<Quotes> quotes;
+    private List<Quotes> quotes;
 
     @JsonProperty("Places")
-    public List<PlacesQuoteApi> places;
+    private List<PlacesQuoteApi> places;
 
     @JsonProperty("Carriers")
-    public List<Carriers> carriers;
+    private List<Carriers> carriers;
 
     @JsonProperty("Currencies")
-    public List<Currencies> currencies;
+    private List<Currencies> currencies;
 
+    public List<Quotes> getQuotes() {
+        return quotes;
+    }
+
+    public void setQuotes(List<Quotes> quotes) {
+        this.quotes = quotes;
+    }
+
+    public List<PlacesQuoteApi> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<PlacesQuoteApi> places) {
+        this.places = places;
+    }
+
+    public List<Carriers> getCarriers() {
+        return carriers;
+    }
+
+    public void setCarriers(List<Carriers> carriers) {
+        this.carriers = carriers;
+    }
+
+    public List<Currencies> getCurrencies() {
+        return currencies;
+    }
+
+    public void setCurrencies(List<Currencies> currencies) {
+        this.currencies = currencies;
+    }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import entities.CheckoutVO;
 import entities.browsequotes.BrowseQuotesRequest;
 import entities.browsequotes.BrowseQuotesResponse;
 import entities.listplaces.ListPlacesRequest;
@@ -46,15 +47,14 @@ public class SpringController {
     }
 
     //Vai realizar postagem pro consumer fazer o processamento do pagamento
-    @PostMapping("/checkoutFlight")
-    public String checkoutFlight(@RequestBody ListPlacesRequest payload) {
+    @PostMapping("/checkout")
+    public String checkoutFlight(@RequestBody CheckoutVO checkoutVO) {
         try {
-          //  FlightService.listPlaces(payload);
+            rabbitMQService.sendMessageToRabbit(checkoutVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rabbitMQService.sendMessageToRabbit(payload.getQueryParameter(), payload.getCurrency(), payload.getLocale());
-        return "user " + payload.getQueryParameter() + " created in database!!";
+        return "user " + " created in database!!";
     }
 
 

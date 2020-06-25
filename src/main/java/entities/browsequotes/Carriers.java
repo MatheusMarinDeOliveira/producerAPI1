@@ -5,8 +5,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Carriers {
 
     @JsonProperty("CarrierId")
-    public String carrierId;
+    private String carrierId;
 
     @JsonProperty("Name")
-    public String name;
+    private String name;
+
+    public String getCarrierId() {
+        return carrierId;
+    }
+
+    public void setCarrierId(String carrierId) {
+        this.carrierId = carrierId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

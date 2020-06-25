@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ListPlacesRequest {
 
     @JsonProperty("queryParameter")
-    public String queryParameter;
+    private String queryParameter;
 
     @JsonProperty("locale")
-    public String locale;
+    private String locale;
 
     @JsonProperty("currency")
-    public String currency;
+    private String currency;
 
     @JsonProperty("country")
-    public String country;
+    private String country;
 
     public String getQueryParameter() {
         return queryParameter;

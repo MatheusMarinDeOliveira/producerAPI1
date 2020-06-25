@@ -2,7 +2,7 @@ package infrastructure.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import entities.UserVO;
+import entities.CheckoutVO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +18,10 @@ public class RabbitMQService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendMessageToRabbit(String idUser, String name, String password) {
+    public void sendMessageToRabbit(CheckoutVO checkoutVO) {
         ObjectMapper objectMapper = new ObjectMapper();
-        UserVO userVO = new UserVO(idUser, name, password);
         try {
-            String message = objectMapper.writeValueAsString(userVO);
+            String message = objectMapper.writeValueAsString(checkoutVO);
             byte[] bytes = message.getBytes();
             rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, bytes);
         } catch (JsonProcessingException e) {

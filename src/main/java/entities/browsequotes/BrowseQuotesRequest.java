@@ -5,25 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BrowseQuotesRequest {
 
     @JsonProperty("country")
-    public String country;
+    private String country;
 
     @JsonProperty("currency")
-    public String currency;
+    private String currency;
 
     @JsonProperty("locale")
-    public String locale;
+    private String locale;
 
     @JsonProperty("originplace")
-    public String originPlace;
+    private String originPlace;
 
     @JsonProperty("destinationplace")
-    public String destinationPlace;
+    private String destinationPlace;
 
     @JsonProperty("outboundpartialdate")
-    public String outboundpartialDate;
+    private String outboundpartialDate;
 
     @JsonProperty("inboundpartialdate")
-    public String inboundpartialDate;
+    private String inboundpartialDate;
 
 
     public String getCountry() {

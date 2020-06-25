@@ -5,27 +5,90 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PlacesQuoteApi {
 
     @JsonProperty("PlaceId")
-    public String placeId;
+    private String placeId;
 
     @JsonProperty("IataCode")
-    public String iataCode;
+    private String iataCode;
 
     @JsonProperty("Name")
-    public String name;
+    private String name;
 
     @JsonProperty("Type")
-    public String type;
+    private String type;
 
     @JsonProperty("SkyscannerCode")
-    public String skyscannerCode;
+    private String skyscannerCode;
 
     @JsonProperty("CityName")
-    public String cityName;
+    private String cityName;
 
     @JsonProperty("CityId")
-    public String cityId;
+    private String cityId;
 
     @JsonProperty("CountryName")
-    public String countryName;
+    private String countryName;
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getIataCode() {
+        return iataCode;
+    }
+
+    public void setIataCode(String iataCode) {
+        this.iataCode = iataCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSkyscannerCode() {
+        return skyscannerCode;
+    }
+
+    public void setSkyscannerCode(String skyscannerCode) {
+        this.skyscannerCode = skyscannerCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
 }
