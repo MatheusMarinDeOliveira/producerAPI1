@@ -2,13 +2,13 @@ package infrastructure.soapService;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import entities.country.Country;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,7 +20,7 @@ import java.net.URLConnection;
 @Component
 public class SoapService {
 
-    public void callSoapService(String country) throws IOException, ParserConfigurationException, SAXException {
+    public Country callSoapService(String isoCode) throws IOException, ParserConfigurationException, SAXException {
         //Code to make a webservice HTTP request
         String responseString = "";
         String outputString = "";
@@ -29,23 +29,19 @@ public class SoapService {
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConn = (HttpURLConnection) connection;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-
         String xmlInput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://www.oorsprong.org/websamples.countryinfo\">\n" +
                 "    <soapenv:Header/>\n" +
                 "    <soapenv:Body>\n" +
                 "        <web:FullCountryInfo>\n" +
-                "            <web:sCountryISOCode>BRA</web:sCountryISOCode>\n" +
+                "            <web:sCountryISOCode>" + isoCode + "</web:sCountryISOCode>\n" +
                 "        </web:FullCountryInfo>\n" +
                 "    </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
 
-        byte[] buffer = new byte[xmlInput.length()];
-        buffer = xmlInput.getBytes();
+        byte[] buffer = xmlInput.getBytes();
         bout.write(buffer);
         byte[] b = bout.toByteArray();
-
-        String SOAPAction = "getCountryRequest";
-
+        String SOAPAction = "FullCountryInfo";
         // Set the appropriate HTTP parameters.
         httpConn.setRequestProperty("Content-Length",
                 String.valueOf(b.length));
@@ -61,7 +57,7 @@ public class SoapService {
         //Ready with sending the request.
 
         //Read the response.
-        InputStreamReader isr = null;
+        InputStreamReader isr;
         if (httpConn.getResponseCode() == 200) {
             isr = new InputStreamReader(httpConn.getInputStream());
         } else {
@@ -76,26 +72,15 @@ public class SoapService {
         }
         //Parse the String output to a org.w3c.dom.Document and be able to reach every node with the org.w3c.dom API.
         Document document = parseXmlFile(outputString); // Write a separate method to parse the xml input.
-        NodeList nodeLst = document.getElementsByTagName("m:sISOCode");
-        String elementValue = nodeLst.item(0).getTextContent();
-        System.out.println(elementValue);
 
-        //Write the SOAP message formatted to the console.
-        String formattedSOAPResponse = formatXML(outputString); // Write a separate method to format the XML input.
-        System.out.println(formattedSOAPResponse);
-    }
+        Country country = new Country();
+        country.setName(document.getElementsByTagName("m:sName").item(0).getTextContent());
+        country.setCapital(document.getElementsByTagName("m:sCapitalCity").item(0).getTextContent());
+        country.setCurrency(document.getElementsByTagName("m:sCurrencyISOCode").item(0).getTextContent());
+        country.setPhoneCode(document.getElementsByTagName("m:sPhoneCode").item(0).getTextContent());
+        country.setLanguage(document.getElementsByTagName("m:sName").item(1).getTextContent());
 
-    //format the XML in your String
-    private String formatXML(String unformattedXml) throws IOException, SAXException, ParserConfigurationException {
-        Document document = parseXmlFile(unformattedXml);
-        OutputFormat format = new OutputFormat();
-        format.setIndenting(true);
-        format.setIndent(3);
-        format.setOmitXMLDeclaration(true);
-        Writer out = new StringWriter();
-        XMLSerializer serializer = new XMLSerializer(out, format);
-        serializer.serialize(document);
-        return out.toString();
+        return country;
     }
 
     private Document parseXmlFile(String in) throws ParserConfigurationException, IOException, SAXException {

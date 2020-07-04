@@ -1,6 +1,7 @@
 package controller;
 
 import entities.checkout.CheckoutVO;
+import entities.country.Country;
 import entities.country.MoreInformationCountryVO;
 import entities.browsequotes.BrowseQuotesRequest;
 import entities.browsequotes.BrowseQuotesResponse;
@@ -8,6 +9,7 @@ import entities.listplaces.ListPlacesRequest;
 import entities.listplaces.ListPlacesResponse;
 import infrastructure.flightapi.FlightService;
 import infrastructure.rabbitmq.RabbitMQService;
+import infrastructure.soapService.SoapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,9 @@ public class SpringController {
 
     @Autowired
     public FlightService flightService;
+
+    @Autowired
+    public SoapService soapService;
 
     //Vai listar todos os lugares para viagem
     @PostMapping("/listPlaces")
@@ -60,7 +65,7 @@ public class SpringController {
 
     //Realiza chamada ao servico soap que buscara mais informacoes sobre paises
     @PostMapping("/moreInformation")
-    public String moreInformation(@RequestBody MoreInformationCountryVO moreInformationVO) {
+    public Country moreInformation(@RequestBody MoreInformationCountryVO moreInformationVO) {
         try {
             ListPlacesRequest payload = new ListPlacesRequest();
             payload.setQueryParameter(moreInformationVO.getCountry());
@@ -72,12 +77,14 @@ public class SpringController {
 
             String countryId = listPlacesResponse.getPlacesList().get(0).getCountryId();
             String replace = countryId.replace("-sky", "");
-            return replace;
+
+            Country s = soapService.callSoapService(replace);
+            return s;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "user " + " created in database!!";
+        return null;
     }
 
 
