@@ -24,9 +24,22 @@ configurations {
     }
 }
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'wsdl4j:wsdl4j:1.6.1'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+
+
+
     compile "com.oracle.ojdbc:ojdbc8:19.3.0.0"
     compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    implementation 'org.springframework.boot:spring-boot-starter'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -40,8 +53,20 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.3.6'
     compile 'org.json:json:20140107'
 
+    implementation ('org.springframework.boot:spring-boot-starter-web-services') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    implementation 'org.springframework.ws:spring-ws-core'
+// For Java 11:
+    implementation 'org.glassfish.jaxb:jaxb-runtime'
+
+
 }
 
+bootJar {
+    baseName = 'gs-consuming-web-service'
+    version =  '0.0.1'
+}
 test {
     useJUnitPlatform()
 }
