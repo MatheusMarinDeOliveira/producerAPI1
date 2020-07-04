@@ -1,6 +1,7 @@
 package controller;
 
-import entities.CheckoutVO;
+import entities.checkout.CheckoutVO;
+import entities.country.MoreInformationCountryVO;
 import entities.browsequotes.BrowseQuotesRequest;
 import entities.browsequotes.BrowseQuotesResponse;
 import entities.listplaces.ListPlacesRequest;
@@ -51,6 +52,28 @@ public class SpringController {
     public String checkoutFlight(@RequestBody CheckoutVO checkoutVO) {
         try {
             rabbitMQService.sendMessageToRabbit(checkoutVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Processing requesting for the checkout";
+    }
+
+    //Realiza chamada ao servico soap que buscara mais informacoes sobre paises
+    @PostMapping("/moreInformation")
+    public String moreInformation(@RequestBody MoreInformationCountryVO moreInformationVO) {
+        try {
+            ListPlacesRequest payload = new ListPlacesRequest();
+            payload.setQueryParameter(moreInformationVO.getCountry());
+            payload.setCountry("br");
+            payload.setCurrency("brl");
+            payload.setLocale("en-GB");
+
+            ListPlacesResponse listPlacesResponse = flightService.listPlaces(payload);
+
+            String countryId = listPlacesResponse.getPlacesList().get(0).getCountryId();
+            String replace = countryId.replace("-sky", "");
+            return replace;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
