@@ -24,24 +24,29 @@ public class SoapService {
         //Code to make a webservice HTTP request
         String responseString = "";
         String outputString = "";
-        String wsURL = "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?WSDL";
+        String wsURL = "https://soap-dsid-country.herokuapp.com/ws/countries.wsdl";
         URL url = new URL(wsURL);
         URLConnection connection = url.openConnection();
         HttpURLConnection httpConn = (HttpURLConnection) connection;
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        String xmlInput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://www.oorsprong.org/websamples.countryinfo\">\n" +
-                "    <soapenv:Header/>\n" +
-                "    <soapenv:Body>\n" +
-                "        <web:FullCountryInfo>\n" +
-                "            <web:sCountryISOCode>" + isoCode + "</web:sCountryISOCode>\n" +
-                "        </web:FullCountryInfo>\n" +
-                "    </soapenv:Body>\n" +
+
+        String xmlInput = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"\n" +
+                "\t\t\t\t  xmlns:gs=\"http://spring.io/guides/gs-producing-web-service\">\n" +
+                "   <soapenv:Header/>\n" +
+                "   <soapenv:Body>\n" +
+                "      <gs:getCountryRequest>\n" +
+                "         <gs:name>" + isoCode + "</gs:name>\n" +
+                "      </gs:getCountryRequest>\n" +
+                "   </soapenv:Body>\n" +
                 "</soapenv:Envelope>";
 
-        byte[] buffer = xmlInput.getBytes();
+        byte[] buffer = new byte[xmlInput.length()];
+        buffer = xmlInput.getBytes();
         bout.write(buffer);
         byte[] b = bout.toByteArray();
-        String SOAPAction = "FullCountryInfo";
+
+        String SOAPAction = "getCountryRequest";
+
         // Set the appropriate HTTP parameters.
         httpConn.setRequestProperty("Content-Length",
                 String.valueOf(b.length));
@@ -74,11 +79,11 @@ public class SoapService {
         Document document = parseXmlFile(outputString); // Write a separate method to parse the xml input.
 
         Country country = new Country();
-        country.setName(document.getElementsByTagName("m:sName").item(0).getTextContent());
-        country.setCapital(document.getElementsByTagName("m:sCapitalCity").item(0).getTextContent());
-        country.setCurrency(document.getElementsByTagName("m:sCurrencyISOCode").item(0).getTextContent());
-        country.setPhoneCode(document.getElementsByTagName("m:sPhoneCode").item(0).getTextContent());
-        country.setLanguage(document.getElementsByTagName("m:sName").item(1).getTextContent());
+        country.setName(document.getElementsByTagName("ns2:name").item(0).getTextContent());
+        country.setCapital(document.getElementsByTagName("ns2:capital").item(0).getTextContent());
+        country.setCurrency(document.getElementsByTagName("ns2:country").item(0).getTextContent());
+        country.setPhoneCode(document.getElementsByTagName("ns2:phoneCode").item(0).getTextContent());
+        country.setLanguage(document.getElementsByTagName("ns2:language").item(0).getTextContent());
 
         return country;
     }
