@@ -81,7 +81,7 @@ public class SoapService {
         Country country = new Country();
         country.setName(document.getElementsByTagName("ns2:name").item(0).getTextContent());
         country.setCapital(document.getElementsByTagName("ns2:capital").item(0).getTextContent());
-        country.setCurrency(document.getElementsByTagName("ns2:country").item(0).getTextContent());
+        country.setCurrency(document.getElementsByTagName("ns2:currency").item(0).getTextContent());
         country.setPhoneCode(document.getElementsByTagName("ns2:phoneCode").item(0).getTextContent());
         country.setLanguage(document.getElementsByTagName("ns2:language").item(0).getTextContent());
 
