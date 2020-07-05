@@ -32,7 +32,7 @@ public class SpringController {
 
     //Vai listar todos os lugares para viagem
     @CrossOrigin
-    @PostMapping(value = "/listPlaces", consumes = {"text/plain;charset=UTF-8"})
+    @PostMapping("/listPlaces")
     public ListPlacesResponse listPlaces(@RequestBody ListPlacesRequest payload) {
         try {
             ListPlacesResponse listPlacesResponse = flightService.listPlaces(payload);
