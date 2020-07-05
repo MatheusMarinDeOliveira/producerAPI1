@@ -1,4 +1,4 @@
-package entities;
+package entities.checkout;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entities.browsequotes.PlacesQuoteApi;
