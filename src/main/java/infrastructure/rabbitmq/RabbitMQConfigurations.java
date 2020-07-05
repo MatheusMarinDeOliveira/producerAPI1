@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -21,6 +22,9 @@ public class RabbitMQConfigurations {
     private final String QUEUE_NAME = "QUEUE_NAME";
     private final String EXCHANGE_NAME = "EXCHANGE_NAME";
     private final String ROUTING_KEY = "foo.bar.#";
+
+    @Value("${cloudamqp.host}")
+    private String host;
 
     @Bean
     Queue queue() {
@@ -52,5 +56,24 @@ public class RabbitMQConfigurations {
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        final URI rabbitMqUrl;
+        try {
+            rabbitMqUrl = new URI(host);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        final CachingConnectionFactory factory = new CachingConnectionFactory();
+        factory.setUsername(rabbitMqUrl.getUserInfo().split(":")[0]);
+        factory.setPassword(rabbitMqUrl.getUserInfo().split(":")[1]);
+        factory.setHost(rabbitMqUrl.getHost());
+        factory.setPort(rabbitMqUrl.getPort());
+        factory.setVirtualHost(rabbitMqUrl.getPath().substring(1));
+
+        return factory;
     }
 }
