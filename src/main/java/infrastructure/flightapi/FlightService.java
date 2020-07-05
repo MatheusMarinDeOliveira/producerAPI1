@@ -7,6 +7,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import entities.browsequotes.BrowseQuotesRequest;
 import entities.browsequotes.BrowseQuotesResponse;
+import entities.browsequotes.BrowseRoutesResponse;
 import entities.listplaces.ListPlacesRequest;
 import entities.listplaces.ListPlacesResponse;
 import org.springframework.stereotype.Service;
@@ -66,4 +67,37 @@ public class FlightService {
         }
         return null;
     }
+
+
+
+    public BrowseRoutesResponse browseRoutes(BrowseQuotesRequest browseQuotesRequest) throws UnirestException {
+
+        String queryInboundpartialDate = "";
+
+        String inboundpartialDate = browseQuotesRequest.getInboundpartialDate();
+        if (inboundpartialDate != null && !inboundpartialDate.isEmpty()) {
+            queryInboundpartialDate = "?inboundpartialdate=" + inboundpartialDate;
+        }
+
+        HttpResponse<String> response = Unirest.get("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/"
+                + browseQuotesRequest.getCountry() + "/"
+                + browseQuotesRequest.getCurrency() + "/"
+                + browseQuotesRequest.getLocale() + "/"
+                + browseQuotesRequest.getOriginPlace() + "/"
+                + browseQuotesRequest.getDestinationPlace() + "/"
+                + browseQuotesRequest.getOutboundpartialDate()
+                + queryInboundpartialDate)
+                .header("x-rapidapi-host", "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com")
+                .header("x-rapidapi-key", "c060e08a97mshf3bbed1846f8a7ep17dbc9jsnae0c1ee8d09d")
+                .asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(response.getBody().toString(), BrowseRoutesResponse.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

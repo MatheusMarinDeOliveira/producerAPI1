@@ -1,5 +1,6 @@
 package controller;
 
+import entities.browsequotes.BrowseRoutesResponse;
 import entities.checkout.CheckoutVO;
 import entities.country.Country;
 import entities.country.MoreInformationCountryVO;
@@ -53,6 +54,19 @@ public class SpringController {
             e.printStackTrace();
         }
         return new BrowseQuotesResponse();
+    }
+
+
+    //Lista viagens disponiveis dps de passar destino e partida
+    @CrossOrigin
+    @PostMapping("/browseRoutes")
+    public BrowseRoutesResponse browseRoutes(@RequestBody BrowseQuotesRequest payload) {
+        try {
+            return flightService.browseRoutes(payload);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new BrowseRoutesResponse();
     }
 
     //Vai realizar postagem pro consumer fazer o processamento do pagamento

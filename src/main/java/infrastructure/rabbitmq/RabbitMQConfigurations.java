@@ -53,24 +53,4 @@ public class RabbitMQConfigurations {
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-
-
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        final URI rabbitMqUrl;
-        try {
-            rabbitMqUrl = new URI("amqp://pbinmofj:5gvlRptD4d8gi-WCMZjfpH8GJ20aOnV0@buck.rmq.cloudamqp.com/pbinmofj");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-
-        final CachingConnectionFactory factory = new CachingConnectionFactory();
-        factory.setUsername(rabbitMqUrl.getUserInfo().split(":")[0]);
-        factory.setPassword(rabbitMqUrl.getUserInfo().split(":")[1]);
-        factory.setHost(rabbitMqUrl.getHost());
-        factory.setPort(rabbitMqUrl.getPort());
-        factory.setVirtualHost(rabbitMqUrl.getPath().substring(1));
-
-        return factory;
-    }
 }
