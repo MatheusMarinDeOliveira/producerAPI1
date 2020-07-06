@@ -1,11 +1,12 @@
 package controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import entities.browsequotes.BrowseQuotesRequest;
+import entities.browsequotes.BrowseQuotesResponse;
 import entities.browsequotes.BrowseRoutesResponse;
 import entities.checkout.CheckoutVO;
 import entities.country.Country;
 import entities.country.MoreInformationCountryVO;
-import entities.browsequotes.BrowseQuotesRequest;
-import entities.browsequotes.BrowseQuotesResponse;
 import entities.listplaces.ListPlacesRequest;
 import entities.listplaces.ListPlacesResponse;
 import infrastructure.flightapi.FlightService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @ComponentScan(basePackages = {"infrastructure.rabbitmq"})
@@ -72,13 +75,23 @@ public class SpringController {
     //Vai realizar postagem pro consumer fazer o processamento do pagamento
     @CrossOrigin
     @PostMapping("/checkout")
-    public String checkoutFlight(@RequestBody CheckoutVO checkoutVO) {
+    public CheckoutId checkoutFlight(@RequestBody CheckoutVO checkoutVO) {
+        checkoutVO.idCheckout = UUID.randomUUID();
         try {
             rabbitMQService.sendMessageToRabbit(checkoutVO);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "Processing requesting for the checkout";
+        return new CheckoutId(checkoutVO.idCheckout);
+    }
+
+    class CheckoutId {
+        @JsonProperty("idCheckout")
+        UUID idCheckout;
+
+        CheckoutId(UUID idCheckout) {
+            this.idCheckout = idCheckout;
+        }
     }
 
     //Realiza chamada ao servico soap que buscara mais informacoes sobre paises

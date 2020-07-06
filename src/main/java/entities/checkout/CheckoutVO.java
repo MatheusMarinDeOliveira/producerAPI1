@@ -1,10 +1,17 @@
 package entities.checkout;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entities.browsequotes.PlacesQuoteApi;
 import entities.browsequotes.Quotes;
 
+import java.util.UUID;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutVO {
+
+    @JsonProperty("idCheckout")
+    public UUID idCheckout;
 
     @JsonProperty("name")
     private String name;
